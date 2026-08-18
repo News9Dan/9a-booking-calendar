@@ -65,11 +65,14 @@
     margin-bottom:20px;
     line-height:1.5;
   }
+  .note.error{border-left-color:var(--red);color:var(--red);}
   .weeknav{
     display:flex;
     align-items:center;
     justify-content:space-between;
     margin-bottom:14px;
+    gap:10px;
+    flex-wrap:wrap;
   }
   .weeknav .label{
     font-family:'JetBrains Mono',monospace;
@@ -77,7 +80,7 @@
     color:var(--amber);
     letter-spacing:0.5px;
   }
-  .navbtn{
+  .navbtn, .refresh-btn{
     background:var(--panel-2);
     border:1px solid var(--border);
     color:var(--text);
@@ -86,9 +89,8 @@
     font-size:13px;
     cursor:pointer;
   }
-  .navbtn:hover{border-color:var(--amber);color:var(--amber);}
-  .navbtn:disabled{opacity:0.35;cursor:not-allowed;}
-  .navbtn:disabled:hover{border-color:var(--border);color:var(--text);}
+  .navbtn:hover, .refresh-btn:hover{border-color:var(--amber);color:var(--amber);}
+  .navgroup{display:flex;gap:8px;align-items:center;}
 
   .grid{
     display:grid;
@@ -96,7 +98,6 @@
     gap:6px;
     overflow-x:auto;
   }
-  .corner{}
   .daycol-head{
     text-align:center;
     padding:8px 4px;
@@ -141,121 +142,49 @@
     transition:border-color 0.15s;
   }
   .cell.open:hover{border-color:var(--green);}
-  .cell.open .plus{
-    color:var(--green);
-    font-size:13px;
-    font-weight:600;
-  }
-  .cell.past{
-    cursor:not-allowed;
-    opacity:0.3;
-  }
+  .cell.open .plus{color:var(--green);font-size:13px;font-weight:600;}
+  .cell.past{cursor:not-allowed;opacity:0.3;}
   .cell.locked{
     align-items:flex-start;
     cursor:default;
     border-color:var(--red-dim);
     background:var(--red-dim);
   }
-  .cell.locked .name{
-    font-size:12px;
-    font-weight:600;
-    color:var(--text);
-    line-height:1.3;
-    word-break:break-word;
-  }
-  .cell.locked .topic{
-    font-size:11px;
-    color:var(--text-mute);
-    line-height:1.3;
-    margin-top:2px;
-    word-break:break-word;
-  }
+  .cell.locked .name{font-size:12px;font-weight:600;color:var(--text);line-height:1.3;word-break:break-word;}
+  .cell.locked .topic{font-size:11px;color:var(--text-mute);line-height:1.3;margin-top:2px;word-break:break-word;}
   .cell.locked .clear-x{
-    align-self:flex-end;
-    font-size:11px;
-    color:var(--text-mute);
-    background:none;
-    border:none;
-    cursor:pointer;
-    padding:0;
-    margin-top:4px;
+    align-self:flex-end;font-size:11px;color:var(--text-mute);
+    background:none;border:none;cursor:pointer;padding:0;margin-top:4px;
   }
   .cell.locked .clear-x:hover{color:var(--red);}
 
-  .legend{
-    display:flex;
-    gap:16px;
-    font-size:12px;
-    color:var(--text-mute);
-    margin-top:20px;
-  }
+  .legend{display:flex;gap:16px;font-size:12px;color:var(--text-mute);margin-top:20px;}
   .legend span{display:inline-flex;align-items:center;gap:6px;}
   .dot{width:8px;height:8px;border-radius:50%;}
 
   .overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.6);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:50;
-    padding:16px;
+    position:fixed;inset:0;background:rgba(0,0,0,0.6);
+    display:flex;align-items:center;justify-content:center;z-index:50;padding:16px;
   }
-  .modal{
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:8px;
-    padding:22px;
-    width:100%;
-    max-width:400px;
-  }
-  .modal h3{
-    font-family:'Bebas Neue',sans-serif;
-    font-size:22px;
-    letter-spacing:1px;
-    margin:0 0 4px;
-  }
-  .modal .modal-sub{
-    font-family:'JetBrains Mono',monospace;
-    font-size:12px;
-    color:var(--amber);
-    margin-bottom:16px;
-  }
-  .modal label{
-    display:block;
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:0.5px;
-    color:var(--text-mute);
-    margin-bottom:4px;
-    margin-top:12px;
-  }
+  .modal{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:22px;width:100%;max-width:400px;}
+  .modal h3{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;margin:0 0 4px;}
+  .modal .modal-sub{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--amber);margin-bottom:16px;}
+  .modal label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-mute);margin-bottom:4px;margin-top:12px;}
   .modal label:first-of-type{margin-top:0;}
   .modal input[type=text], .modal textarea{
-    width:100%;
-    background:var(--bg);
-    border:1px solid var(--border);
-    border-radius:4px;
-    color:var(--text);
-    font-family:'Inter',sans-serif;
-    font-size:14px;
-    padding:9px 10px;
+    width:100%;background:var(--bg);border:1px solid var(--border);border-radius:4px;
+    color:var(--text);font-family:'Inter',sans-serif;font-size:14px;padding:9px 10px;
   }
   .modal textarea{resize:vertical;min-height:56px;}
   .modal input:focus, .modal textarea:focus{outline:none;border-color:var(--amber);}
   .modal-actions{margin-top:18px;display:flex;gap:8px;}
   .submit-btn, .cancel-btn{
-    font-family:'Inter',sans-serif;
-    font-size:13px;
-    font-weight:600;
-    border-radius:4px;
-    padding:9px 14px;
-    cursor:pointer;
-    border:1px solid var(--border);
+    font-family:'Inter',sans-serif;font-size:13px;font-weight:600;border-radius:4px;
+    padding:9px 14px;cursor:pointer;border:1px solid var(--border);
   }
   .submit-btn{background:var(--amber);color:#1a1200;border-color:var(--amber);flex:1;}
   .submit-btn:hover{opacity:0.9;}
+  .submit-btn:disabled{opacity:0.5;cursor:not-allowed;}
   .cancel-btn{background:var(--panel-2);color:var(--text);}
   .loading{color:var(--text-mute);font-size:13px;padding:30px 0;text-align:center;}
 </style>
@@ -269,14 +198,15 @@
     </div>
   </div>
 
-  <div class="note">
-    Green squares are open. Pick whichever day and time works best — once you book it, it's yours and the slot locks. If a day is full, try another date. Anyone viewing this calendar can see what's booked, so the whole newsroom stays in sync.
-  </div>
+  <div id="statusNote" class="note">Loading calendar…</div>
 
   <div class="weeknav">
-    <button class="navbtn" id="prevBtn">‹ Previous week</button>
+    <div class="navgroup">
+      <button class="navbtn" id="prevBtn">‹ Previous week</button>
+      <button class="navbtn" id="nextBtn">Next week ›</button>
+    </div>
     <div class="label" id="weekLabel"></div>
-    <button class="navbtn" id="nextBtn">Next week ›</button>
+    <button class="refresh-btn" id="refreshBtn">↻ Refresh</button>
   </div>
 
   <div id="gridHost"><div class="loading">Loading calendar…</div></div>
@@ -290,9 +220,13 @@
 <div id="modalHost"></div>
 
 <script>
+// ============================================================
+// PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE:
+const API_URL = "https://script.google.com/macros/s/AKfycbxCQnPoVbi3Dm9u96mHwNJq0xdIW3r6_50sSL48TeCc2TMhSG0zN-9p9YiaeCIHd-CyNw/exec";
+// ============================================================
+
 const SLOT_TIMES = ["9:00 AM", "9:10 AM", "9:30 AM", "9:40 AM"];
-const STORAGE_KEY = "9a-calendar-bookings";
-let bookings = {};
+let bookings = {}; // { dateKey: [slot0,slot1,slot2,slot3] }
 let weekStart = mondayOf(new Date());
 
 function mondayOf(d){
@@ -314,29 +248,46 @@ function isToday(d){
   const today = new Date(); today.setHours(0,0,0,0);
   return fmtDateKey(d) === fmtDateKey(today);
 }
+function setStatus(msg, isError){
+  const n = document.getElementById('statusNote');
+  n.textContent = msg;
+  n.className = 'note' + (isError ? ' error' : '');
+}
 
 async function loadBookings(){
+  if(API_URL.indexOf('PASTE_YOUR') === 0){
+    setStatus('Setup needed: paste your Apps Script Web App URL into API_URL near the top of the <script> tag.', true);
+    document.getElementById('gridHost').innerHTML = '';
+    render();
+    return;
+  }
   try{
-    const res = await window.storage.get(STORAGE_KEY, true);
-    bookings = res && res.value ? JSON.parse(res.value) : {};
-  }catch(e){
+    const res = await fetch(API_URL, { method: 'GET' });
+    const rows = await res.json();
     bookings = {};
+    rows.forEach(r => {
+      if(!bookings[r.dateKey]) bookings[r.dateKey] = [null,null,null,null];
+      const idx = Number(r.slotIndex);
+      bookings[r.dateKey][idx] = { status:'locked', name:r.name, topic:r.org + ' — ' + r.topic, contact:r.contact };
+    });
+    setStatus('Green squares are open. Pick a day and time — once booked, it locks and everyone viewing this page sees it.');
+  }catch(e){
+    setStatus('Could not load the calendar from the backend. Check that the Apps Script URL is correct and deployed with "Anyone" access.', true);
   }
   render();
 }
-async function saveBookings(){
-  try{
-    await window.storage.set(STORAGE_KEY, JSON.stringify(bookings), true);
-  }catch(e){
-    console.error('Storage error', e);
-  }
+
+async function postAction(payload){
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // avoids CORS preflight against Apps Script
+    body: JSON.stringify(payload)
+  });
+  return res.json();
 }
 
 function getSlot(dateKey, slotIdx){
-  if(bookings[dateKey] && bookings[dateKey][slotIdx]){
-    return bookings[dateKey][slotIdx];
-  }
-  return null;
+  return (bookings[dateKey] && bookings[dateKey][slotIdx]) ? bookings[dateKey][slotIdx] : null;
 }
 
 function render(){
@@ -346,7 +297,6 @@ function render(){
     d.setDate(d.getDate()+i);
     days.push(d);
   }
-
   const weekEnd = days[4];
   document.getElementById('weekLabel').textContent =
     weekStart.toLocaleDateString('en-US',{month:'short',day:'numeric'}) + ' – ' +
@@ -357,7 +307,7 @@ function render(){
   const grid = document.createElement('div');
   grid.className = 'grid';
 
-  grid.appendChild(el('div','corner'));
+  grid.appendChild(document.createElement('div'));
   days.forEach(d=>{
     const head = document.createElement('div');
     head.className = 'daycol-head' + (isToday(d) ? ' today' : '');
@@ -400,7 +350,6 @@ function render(){
   host.appendChild(grid);
 }
 
-function el(tag, cls){ const e=document.createElement(tag); if(cls) e.className=cls; return e; }
 function escapeHtml(str){
   const div = document.createElement('div');
   div.textContent = str || '';
@@ -433,7 +382,7 @@ function openModal(dateKey, slotIdx, dateObj, time){
   const submitBtn = document.createElement('button');
   submitBtn.className = 'submit-btn';
   submitBtn.textContent = 'Confirm booking';
-  submitBtn.onclick = ()=> confirmBooking(dateKey, slotIdx);
+  submitBtn.onclick = ()=> confirmBooking(dateKey, slotIdx, submitBtn);
   const cancelBtn = document.createElement('button');
   cancelBtn.className = 'cancel-btn';
   cancelBtn.textContent = 'Cancel';
@@ -446,7 +395,7 @@ function openModal(dateKey, slotIdx, dateObj, time){
   document.getElementById('m-name').focus();
 }
 
-async function confirmBooking(dateKey, slotIdx){
+async function confirmBooking(dateKey, slotIdx, submitBtn){
   const name = document.getElementById('m-name').value.trim();
   const org = document.getElementById('m-org').value.trim();
   const topic = document.getElementById('m-topic').value.trim();
@@ -455,28 +404,32 @@ async function confirmBooking(dateKey, slotIdx){
     alert('Fill in your name, organization/department, and what this is for.');
     return;
   }
-  if(!bookings[dateKey]) bookings[dateKey] = [null,null,null,null];
-  bookings[dateKey][slotIdx] = { status:'locked', name, topic: org + ' — ' + topic, contact };
-  await saveBookings();
-  document.getElementById('modalHost').innerHTML = '';
-  render();
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Booking…';
+  try{
+    await postAction({ action:'book', dateKey, slotIndex: slotIdx, name, org, topic, contact });
+    document.getElementById('modalHost').innerHTML = '';
+    await loadBookings();
+  }catch(e){
+    alert('Could not save this booking. Check your connection and try again.');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Confirm booking';
+  }
 }
 
 async function clearSlot(dateKey, slotIdx){
   if(!confirm('Remove this booking?')) return;
-  if(bookings[dateKey]) bookings[dateKey][slotIdx] = null;
-  await saveBookings();
-  render();
+  try{
+    await postAction({ action:'clear', dateKey, slotIndex: slotIdx });
+    await loadBookings();
+  }catch(e){
+    alert('Could not remove this booking. Check your connection and try again.');
+  }
 }
 
-document.getElementById('prevBtn').onclick = ()=>{
-  weekStart.setDate(weekStart.getDate()-7);
-  render();
-};
-document.getElementById('nextBtn').onclick = ()=>{
-  weekStart.setDate(weekStart.getDate()+7);
-  render();
-};
+document.getElementById('prevBtn').onclick = ()=>{ weekStart.setDate(weekStart.getDate()-7); render(); };
+document.getElementById('nextBtn').onclick = ()=>{ weekStart.setDate(weekStart.getDate()+7); render(); };
+document.getElementById('refreshBtn').onclick = ()=> loadBookings();
 
 loadBookings();
 </script>
