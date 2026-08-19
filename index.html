@@ -222,7 +222,7 @@
 <script>
 // ============================================================
 // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE:
-const API_URL = "https://script.google.com/macros/s/AKfycbxCQnPoVbi3Dm9u96mHwNJq0xdIW3r6_50sSL48TeCc2TMhSG0zN-9p9YiaeCIHd-CyNw/exec";
+const API_URL = "https://docs.google.com/spreadsheets/d/197rUSRwmegGEknKWVo3rjH-x6y6cEZ7UOdcCmhfuQFM/edit?gid=0#gid=0";
 // ============================================================
 
 const SLOT_TIMES = ["9:00 AM", "9:10 AM", "9:30 AM", "9:40 AM"];
@@ -374,7 +374,7 @@ function openModal(dateKey, slotIdx, dateObj, time){
     <input type="text" id="m-org" placeholder="e.g. your company, or your newsroom department">
     <label>What's this for?</label>
     <textarea id="m-topic" placeholder="Short description of the segment or topic"></textarea>
-    <label>Contact (optional)</label>
+    <label>Contact</label>
     <input type="text" id="m-contact" placeholder="Email or phone">
   `;
   const actions = document.createElement('div');
@@ -400,8 +400,8 @@ async function confirmBooking(dateKey, slotIdx, submitBtn){
   const org = document.getElementById('m-org').value.trim();
   const topic = document.getElementById('m-topic').value.trim();
   const contact = document.getElementById('m-contact').value.trim();
-  if(!name || !org || !topic){
-    alert('Fill in your name, organization/department, and what this is for.');
+  if(!name || !org || !topic || !contact){
+    alert('Fill in your name, organization/department, what this is for, and a contact.');
     return;
   }
   submitBtn.disabled = true;
